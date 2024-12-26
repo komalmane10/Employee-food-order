@@ -1,0 +1,69 @@
+<div class="container mt-4">
+  <h2 class="text-center mb-4">Food Order Details Of Employee</h2>
+  <div class="card ">
+    <div class="card-header bg-secondary text-white">
+      <div class="d-flex align-items-center">
+       
+        <div>
+          <strong>{{ user?.f_name | titlecase }} {{ user?.l_name | titlecase }}</strong>
+          <br />
+          Employee ID: {{ user?.emp_id }}
+        </div>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div class="col-4">
+          <h5 class="mb-0">Monthly Food Report</h5>
+        </div>
+      
+        <div class="col-4 text-end">
+          <h5 class="mb-0 text-success">Total Fine: Rs {{ totalFine }}</h5>
+        </div>
+      </div>
+
+      <table class="table table-bordered table-striped">
+        <thead class="table-secondary">
+          <tr>
+            <th>Date</th>
+            <th>Breakfast</th>
+            <th>Lunch</th>
+            <th>Dinner</th>
+            <th>Fine</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let report of paginatedFoodOrders">
+            <td>{{ report.date | date: 'short' }}</td>
+            <td [ngClass]="{'bg-warning text-white': report.breakfast === 'Pending'}">{{ report.breakfast }}</td>
+            <td [ngClass]="{'bg-warning text-white': report.lunch === 'Pending'}">{{ report.lunch }}</td>
+            <td [ngClass]="{'bg-warning text-white': report.dinner === 'Pending'}">{{ report.dinner }}</td>
+            <td>
+              {{
+                (report.breakfast === 'Pending' ? 100 : 0) +
+                (report.lunch === 'Pending' ? 100 : 0) +
+                (report.dinner === 'Pending' ? 100 : 0)
+              }}
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-center mt-3">
+        <button class="btn btn-secondary btn-sm mx-2" (click)="firstPage()" [disabled]="currentPage === 1">
+          <i class="bi bi-skip-start"></i> First
+        </button>
+        <button class="btn btn-secondary btn-sm mx-2" (click)="prevPage()" [disabled]="currentPage === 1">
+          <i class="bi bi-arrow-left-circle"></i> Prv
+        </button>
+        <span class="mx-2">Page {{ currentPage }} of {{ totalPages }}</span>
+        <button class="btn btn-secondary btn-sm mx-2" (click)="nextPage()" [disabled]="currentPage === totalPages">
+          <i class="bi bi-arrow-right-circle"></i> Nxt
+        </button>
+        <button class="btn btn-secondary btn-sm mx-2" (click)="lastPage()" [disabled]="currentPage === totalPages">
+          <i class="bi bi-skip-end"></i> Last
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
